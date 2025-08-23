@@ -1,7 +1,6 @@
 import express from "express";
 import axios from "axios";
 import dotenv from "dotenv";
-import serverless from "serverless-http";
 
 import { PermiumUser, deductTokens, connectDB } from "./Files/func.js";
 dotenv.config();
@@ -144,11 +143,11 @@ app.use("/", (req, res) => {
         message: "osiaruAi"
     });
 });
-/*
+
 app.listen(PORT, async () => {
     await connectDB();
     console.log(`Server running on http://localhost:${PORT}`);
 });
-*/
-await connectDB();
-export const handler = serverless(app);
+
+//await connectDB();
+//export const handler = serverless(app);
