@@ -75,12 +75,40 @@ const UserSchema = new mongoose.Schema({
 
 export const PermiumUser = mongoose.model("PermiumUser", UserSchema);
 
+const QuestionSchema = new mongoose.Schema({
+    gmail: {
+        type: String
+    },
+
+    question: {
+        type: String
+    },
+    answer: {
+        type: String
+    }
+});
+
+const AskOsiaru = mongoose.model("AskOsiaruAI", QuestionSchema);
+
+export async function addQuery(gmail, question, answer) {
+    try {
+        let newQuery = new AskOsiaru({
+            gmail:gmail,
+            question: question.toString(),
+            answer: answer.toString()
+        });
+
+        await newQuery.save();
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+
 export async function deductTokens(id, amount, notes) {
     let user = await PermiumUser.findById(id);
     if (!user) throw new Error(`User  not found`);
-   let t = Number(user.tokens);
-    if ( t+ amount < 0){
-     
+    let t = Number(user.tokens);
+    if (t + amount < 0) {
         throw new Error(`Insufficient tokens. Current balance: ${t}`);
     }
     const trans = {
@@ -97,7 +125,7 @@ export async function deductTokens(id, amount, notes) {
     if (!user.details) user.details = { Transactions: [] };
     if (!user.details.Transactions) user.details.Transactions = [];
 
-    user.tokens = amount +user.tokens;
+    user.tokens = amount + user.tokens;
     user.details.Transactions.unshift(trans);
     user.markModified("details"); // Important for mixed types
 

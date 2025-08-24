@@ -2,7 +2,12 @@ import express from "express";
 import axios from "axios";
 import dotenv from "dotenv";
 
-import { PermiumUser, deductTokens, connectDB } from "./Files/func.js";
+import {
+    addQuery,
+    PermiumUser,
+    deductTokens,
+    connectDB
+} from "./Files/func.js";
 dotenv.config();
 
 const app = express();
@@ -81,7 +86,7 @@ app.get("/:id", async (req, res) => {
     }
     //get cost
     let cost = prompt.length / 15;
-    if (cost < 4) cost = 4;
+    if (cost < 2) cost = 1;
 
     if (user.tokens < cost) {
         return res.status(400).json({
@@ -120,9 +125,13 @@ app.get("/:id", async (req, res) => {
         let aiResponseText = aiResponse.candidates[0].content.parts[0].text;
 
         //deductTokens and dave
+        cost = Math.ceil(cost);
         cost = -1 * cost;
         let sssUser = await deductTokens(id, cost, "Asked osiaruAi");
 
+        //store userQueries
+        await addQuery(sssUser.gmail, prompt, aiResponseText);
+        
         res.status(200).json({
             success: true,
             user: sssUser,
