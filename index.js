@@ -87,14 +87,14 @@ app.get("/:id", async (req, res) => {
     //get cost
     let cost = prompt.length / 15;
     if (cost < 2) cost = 1;
-
+/*
     if (user.tokens < cost) {
         return res.status(400).json({
             success: false,
             error: "Insufficient tokens"
         });
     }
-
+*/
     const question = `Here's the deal:
   1. You are osiaruAi, an AI owned by ProjectPQ.
   2. ProjectPQ is the number one past questions website in Uniport.
@@ -148,7 +148,7 @@ app.get("/:id", async (req, res) => {
 
 app.use("/", (req, res) => {
     res.send({
-        body: req.body,
+        body: req,
         message: "osiaruAi"
     });
 });

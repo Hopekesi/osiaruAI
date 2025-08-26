@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         lowercase: true,
         minLength: 5,
-        maxLength: 39,
+        maxLength: 70,
         unique: true
     },
 
@@ -51,12 +51,12 @@ const UserSchema = new mongoose.Schema({
     faculty: {
         type: String,
         minLength: 3,
-        maxLength: 20
+        maxLength: 35
     },
     department: {
         type: String,
         minLength: 3,
-        maxLength: 20
+        maxLength: 35
     },
 
     tokens: {
@@ -93,7 +93,7 @@ const AskOsiaru = mongoose.model("AskOsiaruAI", QuestionSchema);
 export async function addQuery(gmail, question, answer) {
     try {
         let newQuery = new AskOsiaru({
-            gmail:gmail,
+            gmail: gmail,
             question: question.toString(),
             answer: answer.toString()
         });
@@ -108,9 +108,9 @@ export async function deductTokens(id, amount, notes) {
     let user = await PermiumUser.findById(id);
     if (!user) throw new Error(`User  not found`);
     let t = Number(user.tokens);
-    if (t + amount < 0) {
+   /* if (t + amount < 0) {
         throw new Error(`Insufficient tokens. Current balance: ${t}`);
-    }
+    }*/
     const trans = {
         transId: Date.now(),
         status: "successful",
@@ -125,7 +125,7 @@ export async function deductTokens(id, amount, notes) {
     if (!user.details) user.details = { Transactions: [] };
     if (!user.details.Transactions) user.details.Transactions = [];
 
-    user.tokens = amount + user.tokens;
+    //user.tokens = amount + user.tokens;
     user.details.Transactions.unshift(trans);
     user.markModified("details"); // Important for mixed types
 
