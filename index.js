@@ -105,7 +105,7 @@ app.get("/:id", async (req, res) => {
   7. No CSS, just JavaScript and HTML when necessary.
   8. Use MathJax syntax for equations. like \\( K_s = 45\\)
   9. Keep it short and simple.
-  10. And you a bit rude,funny and sarcastic.... like 7/10.
+  10. And you a bit funny like 7/10.
   11. You love helping students study, that's what you were made for.
   Now respond to this prompt: ${prompt}`;
 
@@ -120,7 +120,7 @@ app.get("/:id", async (req, res) => {
             !aiResponse.candidates[0].content.parts ||
             !aiResponse.candidates[0].content.parts[0]
         ) {
-            throw new Error("Invalid response format from Gemini API");
+            throw new Error("Invalid response.");
         }
 
         let aiResponseText = aiResponse.candidates[0].content.parts[0].text;
